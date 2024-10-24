@@ -26,8 +26,6 @@ if (req.method === 'GET') {
       if (error.code === 'ENOENT') {
           try {
               const response = await superagent.get(`https://http.cat/${httpCode}`);
-              
-              // Check if the response status is OK (200)
               if (response.status === 200) {
                   const imageBuffer = response.body;
                   await fs.writeFile(filePath, imageBuffer);
@@ -35,10 +33,9 @@ if (req.method === 'GET') {
                   res.end(imageBuffer);
               } else {
                   res.writeHead(404, { 'Content-Type': 'text/plain' });
-                  res.end('Not Found');  // Image not found at http.cat
+                  res.end('Not Found'); 
               }
           } catch (fetchError) {
-              // If the fetch fails (e.g., invalid code)
               res.writeHead(404, { 'Content-Type': 'text/plain' });
               res.end('Not Found');
           }
